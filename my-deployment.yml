@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: weather-app
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: weather-app
@@ -20,8 +20,8 @@ spec:
             - containerPort: 3000
           resources:
             limits:
-              cpu: "200m"
-              memory: "300Mi"
+              cpu: "150m"
+              memory: "200Mi"
             requests:
               cpu: "100m"
-              memory: "200Mi"
+              memory: "100Mi"
