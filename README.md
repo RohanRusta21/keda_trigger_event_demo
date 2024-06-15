@@ -19,6 +19,14 @@ ScaledObject is deployed as a Kubernetes CRD (Custom Resource Definition) which 
 kubectl apply --server-side -f https://github.com/kedacore/keda/releases/download/v2.14.0/keda-2.14.0.yaml
 ```
 
+### Installing using Helm
+
+```shell
+helm repo add kedacore https://kedacore.github.io/charts
+helm repo update
+helm install keda kedacore/keda --namespace keda --create-namespace
+```
+
 ### Validate if Installation is successful or not
 
 ```shell
