@@ -24,3 +24,15 @@ kubectl apply --server-side -f https://github.com/kedacore/keda/releases/downloa
 ```shell
 kubectl get deploy,crd -n keda
 ```
+
+### Verify Scaled Objects Created or not
+
+```shell
+kubectl get scaledobjects
+```
+
+### Checking logs for keda operator
+
+```shell
+kubectl logs -f keda-operator-6c99649b58-r5qtl -n keda --tail=100
+```
