@@ -1,27 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: weather-app
+  name: nginx-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: weather-app
+      app: nginx-app
   template:
     metadata:
       labels:
-        app: weather-app
+        app: nginx-app
     spec:
       containers:
-        - name: weather-app
-          image: wededo4644/weather-app:89
+        - name: nginx-app
+          image: nginx:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 3000
-          resources:
-            limits:
-              cpu: "150m"
-              memory: "200Mi"
-            requests:
-              cpu: "100m"
-              memory: "100Mi"
+            - containerPort: 80
