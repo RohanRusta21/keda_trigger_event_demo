@@ -1,0 +1,12 @@
+kind: HTTPScaledObject
+apiVersion: http.keda.sh/v1alpha1
+metadata:
+    name: myapp
+spec:
+    scaleTargetRef:
+        deployment: myAppDeployment
+        service: myAppService
+        port: 8080
+    replicas:
+        min: 1
+        max: 10
