@@ -44,3 +44,10 @@ kubectl get scaledobjects
 ```shell
 kubectl logs -f keda-operator-6c99649b58-r5qtl -n keda --tail=100
 ```
+
+
+### Installing KEDA HTTP Add-on
+
+```shell
+helm install http-add-on kedacore/keda-add-ons-http --namespace keda
+```
