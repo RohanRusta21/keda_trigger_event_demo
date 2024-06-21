@@ -12,3 +12,4 @@ spec:
     replicas:
         min: 1
         max: 10
+    scaledownPeriod: 30    
