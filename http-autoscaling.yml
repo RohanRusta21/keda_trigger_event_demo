@@ -3,6 +3,8 @@ apiVersion: http.keda.sh/v1alpha1
 metadata:
     name: nginx-app-http
 spec:
+    hosts:
+        - myhost.com
     scaleTargetRef:
         deployment: nginx-app
         service: nginx-app
