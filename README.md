@@ -51,3 +51,15 @@ kubectl logs -f keda-operator-6c99649b58-r5qtl -n keda --tail=100
 ```shell
 helm install http-add-on kedacore/keda-add-ons-http --namespace keda
 ```
+
+### For autoscaling to work properly, HTTP traffic needs to route through the Service that the add-on has set up.
+
+```shell
+kubectl port-forward svc/keda-add-ons-http-interceptor-proxy -n keda 32500:8080
+```
+
+### Send http based traffic to host and service
+
+```shell
+curl localhost:32500 -H 'Host: myhost.com'
+```
