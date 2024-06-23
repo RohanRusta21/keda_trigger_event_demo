@@ -1,25 +1,21 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: nginx-deployment
-  namespace: default
+  name: demo-keda-scaledobject
 spec:
   scaleTargetRef:
-    apiVersion:    apps/v1        # Optional. Default: apps/v1
-    kind:          Deployment     # Optional. Default: Deployment
-    name:          weather-app     # Mandatory. Must be in the same namespace as the ScaledObject
-  pollingInterval:  5                    # Optional. Default: 5 seconds
-  cooldownPeriod:   300                  # Optional. Default: 300 seconds
-  minReplicaCount:  0                  # Optional. Default: 0
-  maxReplicaCount:  5                    # Optional. Default: 100
-  fallback:                                        # Optional. Section to specify fallback options
-    failureThreshold: 3                            # Mandatory if fallback section is included
-    replicas: 1                                    # Mandatory if fallback section is included
+    apiVersion:    apps/v1
+    kind:          Deployment
+    name:          demo-keda-deploy
+  pollingInterval: 10     # Optional. Default: 30 seconds
+  cooldownPeriod: 100     # Optional. Default: 300 seconds
+  minReplicaCount: 1      # Optional. Default: 0
+  maxReplicaCount: 10      # Optional. Default: 100
   triggers:
-  - type: cron
-    metadata:
-      # Required
-      timezone: Asia/Kolkata  # The acceptable values would be a value from the IANA Time Zone Database.
-      start: 30 * * * *       # Every hour on the nth minute you mentioned
-      end: 45 * * * *         # Every hour on the nth minute you mentioned
-      desiredReplicas: "5"
+    - type: prometheus
+      metadata:
+        serverAddress: http://prometheus-server.monitoring.svc.cluster.local:80/
+        query: sum(rate(hello_world_requests{service="demo-keda-svc"}[1m])) # Note: query must return a vector/scalar single element response
+        threshold: '50'
+        # Optional fields:
+        ignoreNullValues: "true" # Default is `true`, which means ignoring the empty value list from Prometheus. Set to `false` the scaler will return error when Prometheus target is lost
