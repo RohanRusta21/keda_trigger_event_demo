@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    events {
+      worker_connections 1024;
+    }
+    http {
+      server {
+        listen 80;
+        location /stub_status {
+          stub_status;
+          allow 127.0.0.1;  # Only allow localhost to access this endpoint
+          deny all;
+        }
+      }
+    }
