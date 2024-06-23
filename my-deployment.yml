@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-app
+  labels:
+    app: nginx-app
 spec:
   replicas: 1
   selector:
@@ -11,6 +13,10 @@ spec:
     metadata:
       labels:
         app: nginx-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9113"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: nginx-app
@@ -18,3 +24,17 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+        - name: nginx-prometheus-exporter
+          image: nginx/nginx-prometheus-exporter:latest
+          args:
+            - -nginx.scrape-uri=http://localhost:80/stub_status
+          ports:
+            - containerPort: 9113
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: nginx-config
