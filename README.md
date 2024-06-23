@@ -46,8 +46,8 @@ kubectl logs -f keda-operator-6c99649b58-r5qtl -n keda --tail=100
 ```
 
 
-### Installing KEDA HTTP Add-on
+### Run demo service to serve traffic
 
 ```shell
-helm install http-add-on kedacore/keda-add-ons-http --namespace keda
+kubectl port-forward svc/demo-keda-svc 3000
 ```
