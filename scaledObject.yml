@@ -2,7 +2,6 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: kafka-scaledobject
-  namespace: kafka-keda
   labels:
     deploymentName: quarkus-eda-demo
 spec:
