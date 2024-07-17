@@ -1,19 +1,19 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: demo-keda-scaledobject
+  name: kafka-scaledobject
+  namespace: kafka-keda
+  labels:
+    deploymentName: quarkus-eda-demo
 spec:
   scaleTargetRef:
-    apiVersion:    apps/v1
-    kind:          Deployment
-    name:          demo-keda-deploy
-  minReplicaCount: 1      # Optional. Default: 0
-  maxReplicaCount: 10      # Optional. Default: 100
+    name: quarkus-eda-demo
+  pollingInterval: 30
   triggers:
-    - type: prometheus
+    - type: kafka
       metadata:
-        serverAddress: http://prometheus-server.monitoring.svc.cluster.local:80/
-        query: sum(rate(hello_world_requests{service="demo-keda-svc"}[1m])) # Note: query must return a vector/scalar single element response
-        threshold: '50'
-        # Optional fields:
-        ignoreNullValues: "true" # Default is `true`, which means ignoring the empty value list from Prometheus. Set to `false` the scaler will return error when Prometheus target is lost
+        bootstrapServers: my-cluster-kafka-bootstrap.kafka-keda.svc:9092
+        consumerGroup: my-group
+        topic: my-topic
+        lagThreshold: "50"
+        offsetResetPolicy: latest
